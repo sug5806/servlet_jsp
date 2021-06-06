@@ -14,11 +14,6 @@ public class CreateUserController implements Controller {
 
     @Override
     public String execute(HttpServletRequest request, HttpServletResponse response) throws Exception {
-        String requestURI = request.getRequestURI();
-        if (requestURI.equals("/users/form")) {
-            return "/user/form.jsp";
-        }
-
         User user = new User(request.getParameter("userId"), request.getParameter("password"), request.getParameter("name"),
                 request.getParameter("email"));
         log.debug("User : {}", user);

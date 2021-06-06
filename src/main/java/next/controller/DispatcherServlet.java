@@ -19,6 +19,7 @@ public class DispatcherServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         log.debug("URI : {}", req.getRequestURI());
+        log.debug("method : {}", req.getMethod());
 
         if (ForwardController.isForwardUrl(req.getRequestURI())) {
             RequestDispatcher requestDispatcher = req.getRequestDispatcher(ForwardController.getForwardPath(req.getRequestURI()));

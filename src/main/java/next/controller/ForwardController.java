@@ -8,6 +8,8 @@ public class ForwardController {
 
     static {
         forwardMap.put("/users/form", "/user/form.jsp");
+        forwardMap.put("/users/loginForm", "/user/login.jsp");
+        forwardMap.put("/", "index.jsp");
     }
 
     public static boolean isForwardUrl(String url) {

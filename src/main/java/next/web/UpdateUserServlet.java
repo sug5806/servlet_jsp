@@ -16,7 +16,7 @@ import java.io.IOException;
 @WebServlet({"/user/update", "/user/updateForm"})
 public class UpdateUserServlet extends HttpServlet {
     private static final long serialVersionUID = 1L;
-    private static final Logger log = LoggerFactory.getLogger(CreateUserServlet.class);
+    private static final Logger log = LoggerFactory.getLogger(UpdateUserServlet.class);
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {

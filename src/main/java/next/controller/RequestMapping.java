@@ -9,5 +9,7 @@ public class RequestMapping {
     static {
         controllerMap.put("/users", new ListUserController());
         controllerMap.put("/users/create", new CreateUserController());
+        controllerMap.put("/users/login", new LoginController());
+        controllerMap.put("/users/logout", new LogoutController());
     }
 }
