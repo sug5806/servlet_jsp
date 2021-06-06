@@ -1,24 +1,20 @@
 package next.controller;
 
-import java.util.HashMap;
-import java.util.Map;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
-public class ForwardController {
-    private static Map<String, String> forwardMap = new HashMap<>();
+public class ForwardController implements Controller {
+    private String forwardUrl;
 
-    static {
-        forwardMap.put("/users/form", "/user/form.jsp");
-        forwardMap.put("/users/loginForm", "/user/login.jsp");
-        forwardMap.put("/", "index.jsp");
+    public ForwardController(String forwardUrl) {
+        this.forwardUrl = forwardUrl;
+        if (forwardUrl == null) {
+            throw new NullPointerException("forwardUrl is null");
+        }
     }
 
-    public static boolean isForwardUrl(String url) {
-        String path = forwardMap.get(url);
-
-        return path != null;
-    }
-
-    public static String getForwardPath(String url) {
-        return forwardMap.get(url);
+    @Override
+    public String execute(HttpServletRequest request, HttpServletResponse response) throws Exception {
+        return forwardUrl;
     }
 }

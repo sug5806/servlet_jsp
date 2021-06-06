@@ -21,12 +21,6 @@ public class DispatcherServlet extends HttpServlet {
         log.debug("URI : {}", req.getRequestURI());
         log.debug("method : {}", req.getMethod());
 
-        if (ForwardController.isForwardUrl(req.getRequestURI())) {
-            RequestDispatcher requestDispatcher = req.getRequestDispatcher(ForwardController.getForwardPath(req.getRequestURI()));
-            requestDispatcher.forward(req, resp);
-            return;
-        }
-
         Controller controller = RequestMapping.controllerMap.get(req.getRequestURI());
         try {
             String url = controller.execute(req, resp);
