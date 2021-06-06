@@ -88,11 +88,4 @@ public class User {
     public String toString() {
         return "User [userId=" + userId + ", name=" + name + ", email=" + email + "]";
     }
-
-    public void userUpdate(User user) {
-        this.userId = user.getUserId();
-        this.password = user.getPassword();
-        this.name = user.getName();
-        this.email = user.getEmail();
-    }
 }
