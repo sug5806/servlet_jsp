@@ -13,37 +13,41 @@ import java.io.IOException;
 
 @WebServlet(name = "dispatcher", urlPatterns = "/", loadOnStartup = 1)
 public class DispatcherServlet extends HttpServlet {
-
+    private static final long serialVersionUID = 1L;
     private static final Logger log = LoggerFactory.getLogger(DispatcherServlet.class);
+    private static final String DEFAULT_REDIRECT_PREFIX = "redirect:";
+
+    private RequestMapping requestMapping;
 
     @Override
-    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+    public void init() throws ServletException {
+        requestMapping = new RequestMapping();
+        requestMapping.initMapping();
+    }
+
+    @Override
+    protected void service(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         log.debug("URI : {}", req.getRequestURI());
         log.debug("method : {}", req.getMethod());
 
-        Controller controller = RequestMapping.controllerMap.get(req.getRequestURI());
+        Controller controller = requestMapping.findController(req.getRequestURI());
+
         try {
-            String url = controller.execute(req, resp);
-
-            if (url.startsWith("redirect")) {
-                resp.sendRedirect(getRedirectUrl(url));
-                return;
-            }
-
-            RequestDispatcher requestDispatcher = req.getRequestDispatcher(url);
-            requestDispatcher.forward(req, resp);
-        } catch (Exception e) {
+            String viewName = controller.execute(req, resp);
+            move(viewName, req, resp);
+        } catch (Throwable e) {
             log.debug("error : {}", e.getMessage());
+            throw new ServletException(e.getMessage());
         }
     }
 
-    private String getRedirectUrl(String url) {
-        String[] tokens = url.split(":");
-        if (tokens.length > 1) {
-            return tokens[1];
+    private void move(String viewName, HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
+        if (viewName.startsWith(DEFAULT_REDIRECT_PREFIX)) {
+            response.sendRedirect(viewName.substring(DEFAULT_REDIRECT_PREFIX.length()));
+            return;
         }
 
-        return tokens[0];
-
+        RequestDispatcher requestDispatcher = request.getRequestDispatcher(viewName);
+        requestDispatcher.forward(request, response);
     }
 }
